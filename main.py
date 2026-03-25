@@ -15,8 +15,8 @@ FEATURES = [
     "bg_data", "reserved"
 ]
 
-MODEL_PATH = "model\lstm_permission_model.keras"
-SCALER_PATH = "model\scaler.pkl"
+MODEL_PATH = "model/lstm_permission_model.keras"
+SCALER_PATH = "model/scaler.pkl"
 
 # ----------------------------
 # LOAD MODEL

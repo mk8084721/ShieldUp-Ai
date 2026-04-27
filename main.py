@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel, field_validator
+from pydantic import ValidationInfo
 from typing import List
 import numpy as np
 import joblib

@@ -40,3 +40,5 @@
 2026-04-27 14:41:16,015 - WARNING - STATISTICAL_ANOMALY | IP: 127.0.0.1 | session: rate-test-033 | hash: 60d21e3ac25b5d18 | max_z: 5296.50 | features: ['data_upload', 'data_download', 'bg_data']
 2026-04-27 14:41:18,196 - WARNING - STATISTICAL_ANOMALY | IP: 127.0.0.1 | session: rate-test-034 | hash: 60d21e3ac25b5d18 | max_z: 5296.50 | features: ['data_upload', 'data_download', 'bg_data']
 2026-04-27 14:41:24,569 - WARNING - STATISTICAL_ANOMALY | IP: 127.0.0.1 | session: roblox-mixed-012 | hash: 318b4383e19976fa | max_z: 44938.72 | features: ['data_upload', 'data_download', 'bg_data']
+2026-04-27 15:04:24,057 - WARNING - TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+2026-04-27 15:05:57,363 - WARNING - TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.

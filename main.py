@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Request
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 from typing import List
 import numpy as np
 import joblib
@@ -105,27 +105,29 @@ class Event(BaseModel):
     reserved: float
 
     # ✅ الحماية الأولى: التحقق من حدود كل قيمة
-    @validator('*', pre=True)
-    def check_not_nan_inf(cls, v, field):
+    @field_validator('*', mode='before')
+    def check_not_nan_inf(cls, v, info: ValidationInfo):
         if isinstance(v, float):
             if np.isnan(v) or np.isinf(v):
-                raise ValueError(f"Field '{field.name}' contains NaN or Inf — possible poisoning attempt")
+                raise ValueError(f"Field '{info.field_name}' contains NaN or Inf")
         return v
 
-    @validator('cam_bg_ratio', 'loc_bg_ratio')
+    @field_validator('cam_bg_ratio', 'loc_bg_ratio')
     def ratio_must_be_0_to_1(cls, v):
         if not (0.0 <= v <= 1.0):
             raise ValueError(f"Ratio value {v} out of range [0,1]")
         return v
 
-    @validator('mic_bg_flag')
+    @field_validator('mic_bg_flag')
     def flag_must_be_binary(cls, v):
         if v not in (0, 1):
             raise ValueError(f"mic_bg_flag must be 0 or 1, got {v}")
         return v
 
-    @validator('cam_count', 'cam_duration', 'loc_freq', 'mic_duration',
-               'data_upload', 'data_download', 'bg_data', 'reserved')
+    @field_validator(
+        'cam_count', 'cam_duration', 'loc_freq', 'mic_duration',
+        'data_upload', 'data_download', 'bg_data', 'reserved'
+    )
     def must_be_non_negative(cls, v):
         if v < 0:
             raise ValueError(f"Negative value {v} not allowed")
@@ -136,16 +138,15 @@ class SessionRequest(BaseModel):
     session_id: str
     events: List[Event]
 
-    @validator('session_id')
+    @field_validator('session_id')
     def session_id_safe(cls, v):
-        # منع injection في الـ session_id
         if len(v) > 64:
             raise ValueError("session_id too long")
         if not v.replace("-", "").replace("_", "").isalnum():
             raise ValueError("session_id contains invalid characters")
         return v
 
-    @validator('events')
+    @field_validator('events')
     def events_count_valid(cls, v):
         if len(v) < MIN_EVENTS_PER_SESSION:
             raise ValueError(f"Too few events: minimum is {MIN_EVENTS_PER_SESSION}")
